@@ -6,39 +6,73 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>600</width>
+    <width>724</width>
     <height>600</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>724</width>
+    <height>600</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>724</width>
+    <height>600</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QHBoxLayout" name="horizontalLayout">
-    <item>
-     <widget class="GLWidget" name="tela" native="true"/>
-    </item>
-   </layout>
+   <widget class="GLWidget" name="tela" native="true">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>600</width>
+      <height>600</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QWidget" name="layoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>610</x>
+      <y>20</y>
+      <width>102</width>
+      <height>166</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Dimenscão</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="dimencao">
+       <property name="value">
+        <number>0</number>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Angulo da Linha</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QDial" name="angulo"/>
+     </item>
+    </layout>
+   </widget>
   </widget>
-  <widget class="QMenuBar" name="menuBar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>600</width>
-     <height>21</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QToolBar" name="mainToolBar">
-   <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak">
-    <bool>false</bool>
-   </attribute>
-  </widget>
-  <widget class="QStatusBar" name="statusBar"/>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>

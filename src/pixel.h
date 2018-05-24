@@ -11,10 +11,12 @@ class Pixel
 {
 
 public:
-    explicit Pixel(int i, int j);
+    explicit Pixel(int i, int j, float tamanho, float x_mundo, float y_mundo);
     ~Pixel();
 
     void desenhar();
+    void desenhar2();
+
     const char *get_descricao();
     void set_desenhar(bool);
 
@@ -44,6 +46,7 @@ private:
     //Posicão do Pixel
     Posicao pos;
 
+    float* pos_mundo;
     /*
     //Definirá a quantidade de quadradinhos que irão compor o pixel
     int dimencao;

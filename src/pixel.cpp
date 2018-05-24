@@ -1,17 +1,42 @@
 #include "pixel.h"
 #include <sstream>
 #include <QtOpenGL>
+#include <QDebug>
 
 using std::string;
 
-Pixel::Pixel(int i, int j) : i(i), j(j)
+Pixel::Pixel(int i, int j, float tamanho, float x_mundo, float y_mundo) : i(i), j(j)
 {
     this->cor = new float[3];
+    this->cor[0] = 0.0;
+    this->cor[1] = 0.0;
+    this->cor[2] = 0.0;
+
+    //qDebug() << (tamanho * i) + (tamanho) << (tamanho * j) + (tamanho);
+    //qDebug() << tamanho * i << tamanho * j;
+
+    set_max_XY((tamanho * i) + (tamanho), (tamanho * j) + (tamanho));
+    set_min_XY(tamanho * i, tamanho * j);
+
+    /*
+    this->pos.x_min = tamanho * i;
+    this->pos.x_max = (tamanho * i) + (tamanho);
+
+    this->pos.y_min = tamanho * j;
+    this->pos.y_max = (tamanho * j) + (tamanho);
+    */
+
+    this->pos_mundo = new float[2];
+    this->pos_mundo[0] = x_mundo;
+    this->pos_mundo[1] = y_mundo;
+
+    this->desenhar_pix = true;
 }
 
 Pixel::~Pixel()
 {
     delete this->cor;
+    delete this->pos_mundo;
 }
 
 void Pixel::desenhar()
@@ -20,19 +45,32 @@ void Pixel::desenhar()
     {
         glBegin(GL_LINES);
             glColor3fv(this->cor);
-            glVertex2f(this->pos.x_min, this->pos.y_max);
-            glVertex2f(this->pos.x_max, this->pos.y_max);
+            glVertex2f(this->pos.x_min + pos_mundo[0], this->pos.y_min + pos_mundo[1]);
+            glVertex2f(this->pos.x_min + pos_mundo[0], this->pos.y_max + pos_mundo[1]);
 
-            glVertex2f(this->pos.x_max, this->pos.y_max);
-            glVertex2f(this->pos.x_max, this->pos.y_min);
+            glVertex2f(this->pos.x_min + pos_mundo[0], this->pos.y_max + pos_mundo[1]);
+            glVertex2f(this->pos.x_max + pos_mundo[0], this->pos.y_max + pos_mundo[1]);
 
-            glVertex2f(this->pos.x_max, this->pos.y_min);
-            glVertex2f(this->pos.x_min, this->pos.y_min);
+            glVertex2f(this->pos.x_max + pos_mundo[0], this->pos.y_max + pos_mundo[1]);
+            glVertex2f(this->pos.x_max + pos_mundo[0], this->pos.y_min + pos_mundo[1]);
 
-            glVertex2f(this->pos.x_min, this->pos.y_min);
-            glVertex2f(this->pos.x_min, this->pos.y_max);
+            glVertex2f(this->pos.x_max + pos_mundo[0], this->pos.y_min + pos_mundo[1]);
+            glVertex2f(this->pos.x_min + pos_mundo[0], this->pos.y_min + pos_mundo[1]);
         glEnd();
     }
+}
+
+void Pixel::desenhar2()
+{
+    glBegin(GL_QUADS);
+        glColor3fv(this->cor);
+
+        glVertex2f(this->pos.x_min + pos_mundo[0], this->pos.y_min + pos_mundo[1]);
+        glVertex2f(this->pos.x_min + pos_mundo[0], this->pos.y_max + pos_mundo[1]);
+
+        glVertex2f(this->pos.x_max + pos_mundo[0], this->pos.y_max + pos_mundo[1]);
+        glVertex2f(this->pos.x_max + pos_mundo[0], this->pos.y_min + pos_mundo[1]);
+    glEnd();
 }
 
 const char* Pixel::get_descricao()

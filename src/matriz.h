@@ -2,6 +2,7 @@
 #define MATRIZ_H
 
 #include <vector>
+#include "linha.h"
 #include "pixel.h"
 using std::vector;
 
@@ -9,16 +10,32 @@ class Matriz
 {
 
 public:
-    explicit Matriz(int dimencao_x = 20, int dimencao_y = 20);
+    Matriz(int altura = 2, int largura = 2, int dimensao = 20);
     ~Matriz();
 
-    void desenhar();
+    void desenhar(Linha *lin);
+    int get_dimensao();
+    void set_dimensao(int valor);
 
 private:
-    int dimencao_x;
-    int dimencao_y;
+    void pixeis_da_linha(Linha* lin);
 
-    void lin_pixel();
+    struct Janela{
+        Janela(int altura, int largura)
+        {
+            this->altura = altura;
+            this->largura = largura;
+        }
+
+        int altura;
+        int largura;
+    };
+
+    int linha;
+    int coluna;
+
+    Janela aspecto;
+
     vector<vector<Pixel*>* > pixeis;
 };
 

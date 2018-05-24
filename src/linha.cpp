@@ -3,44 +3,34 @@
 
 using std::vector;
 
-Linha::Linha(int dim_i, int dim_j) : dimencao_i(dim_i), dimencao_j(dim_j)
+Linha::Linha(int dimensao, int tamanho, float angulo) : dimensao(dimensao), tamanho(tamanho), angulo(angulo)
 {
     this->cor = new float[3];
+    this->cor[0] = 0.0;
+    this->cor[1] = 0.0;
+    this->cor[2] = 0.0;
 
-    vector<Posicao* >* p1 = new vector<Posicao*>();
-    p1->push_back(new Posicao());
-    this->posicoes.push_back(p1);
+    this->p1 = new Posicao();
+    this->p2 = new Posicao();
 
-    vector<Posicao* >* p2 = new vector<Posicao*>();
-    p2->push_back(new Posicao());
-    this->posicoes.push_back(p2);
+    /*
+    this->p1->x = ;
+    this->p1->y = ;
+
+    this->p2->x = ;
+    this->p2->y = ;
+    */
 }
 
 Linha::~Linha()
 {
-    Posicao* p;
-    vector<Posicao* >* v;
-
-    v = this->posicoes.at(0);
-    p = v->at(0);//x
-    delete p;
-    p = v->at(1);//y
-    delete p;
-    delete v;
-
-    v = this->posicoes.at(1);
-    p = v->at(0);//x
-    delete p;
-    p = v->at(1);//y
-    delete p;
-    delete v;
+    delete this->cor;
+    delete this->p1;
+    delete this->p2;
 }
 
 void Linha::desenhar()
 {
-    Posicao* p1 = this->posicoes.at(0)->at(0);
-    Posicao* p2 = this->posicoes.at(0)->at(1);
-
     glBegin(GL_LINES);
         glColor3fv(this->cor);
         glVertex2f(p1->x, p1->y);
@@ -48,18 +38,39 @@ void Linha::desenhar()
     glEnd();
 }
 
-void Linha::set_p1(int x, int y)
+void Linha::set_ponto_inicial(float x, float y)
 {
-    vector<Posicao*>* v = this->posicoes.at(0);
-    Posicao* p = v->at(0);
-    p->x = x;
-    p->y = y;
+    p1->x = x;
+    p1->y = y;
 }
 
-void Linha::set_p2(int x, int y)
+void Linha::set_ponto_final(float x, float y)
 {
-    vector<Posicao*>* v = this->posicoes.at(1);
-    Posicao* p = v->at(0);
-    p->x = x;
-    p->y = y;
+    p2->x = x;
+    p2->y = y;
+}
+
+void Linha::set_dimensao(int dim)
+{
+    this->dimensao = dim;
+}
+
+float Linha::get_angulo() const
+{
+    return angulo;
+}
+
+void Linha::set_angulo(float angulo)
+{
+    this->angulo = angulo;
+}
+
+Linha::Posicao *Linha::get_ponto_inicial() const
+{
+    return this->p1;
+}
+
+Linha::Posicao *Linha::get_ponto_final() const
+{
+    return this->p2;
 }

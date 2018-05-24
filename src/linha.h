@@ -6,25 +6,35 @@ using std::vector;
 class Linha
 {
 public:
-    explicit Linha(int dim_i, int dim_j);
+    struct Posicao
+    {
+        float x;
+        float y;
+    };
+
+    explicit Linha(int dimensao, int tamanho, float angulo);
     ~Linha();
 
     void desenhar();
-    void set_p1(int x, int y);
-    void set_p2(int x, int y);
+
+    void set_ponto_inicial(float x, float y);
+    void set_ponto_final(float x, float y);
+
+    void set_dimensao(int dim);
+    void set_angulo(float angulo);
+
+    float get_angulo() const;
+    Posicao* get_ponto_inicial() const;
+    Posicao* get_ponto_final() const;
 
 private:
-    struct Posicao
-    {
-        int x;
-        int y;
-    };
-
-    int dimencao_i;
-    int dimencao_j;
+    int dimensao;
+    float angulo;
+    int tamanho;
 
     float* cor;
-    vector<vector<Posicao *>* > posicoes;
+    Posicao* p1;
+    Posicao* p2;
 };
 
 #endif // LINHA_H

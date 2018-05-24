@@ -2,6 +2,7 @@
 #define GLWIDGET_H
 #include <QGLWidget>
 #include "matriz.h"
+#include "linha.h"
 
 class GLWidget : public QGLWidget
 {
@@ -12,8 +13,12 @@ public:
     void initializeGL();
     void paintGL();
 
+    int get_dimensao();
+    void set_dimensao(int valor);
+
 private:
     Matriz* mt;
+    Linha* lin;
 };
 
 #endif // GLWIDGET_H
