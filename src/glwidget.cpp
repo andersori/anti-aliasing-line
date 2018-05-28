@@ -8,8 +8,8 @@ GLWidget::GLWidget(QWidget* parent) : QGLWidget(parent)
 
     this->mt = new Matriz();
     this->lin = new Linha(mt->get_dimensao(),10,30);
-    this->lin->set_ponto_inicial(0.8, 0.8);
-    this->lin->set_ponto_final(0.8, 0.6);
+    this->lin->set_ponto_inicial(-0.14, -0.64);
+    this->lin->set_ponto_final(0.23, 0.93);
 
 }
 
@@ -49,7 +49,7 @@ void GLWidget::paintGL()
     */
 
     mt->desenhar(lin);
-    lin->desenhar();
+    //lin->desenhar();
 }
 
 int GLWidget::get_dimensao()

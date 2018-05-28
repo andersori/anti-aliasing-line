@@ -23,6 +23,12 @@ public:
     void set_min_XY(float, float);
     void set_max_XY(float, float);
 
+    void set_cor(float r, float g, float b);
+    float* get_cor();
+
+    int get_i() const;
+    int get_j() const;
+
 private:
     struct Posicao{
         //x e y da posição inferior esquerda do pixel

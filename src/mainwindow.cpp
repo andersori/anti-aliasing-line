@@ -13,8 +13,3 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
-
-void MainWindow::on_spinBox_valueChanged(int arg1)
-{
-    this->ui->tela->set_dimensao(arg1);
-}

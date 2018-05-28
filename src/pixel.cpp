@@ -8,9 +8,9 @@ using std::string;
 Pixel::Pixel(int i, int j, float tamanho, float x_mundo, float y_mundo) : i(i), j(j)
 {
     this->cor = new float[3];
-    this->cor[0] = 0.0;
-    this->cor[1] = 0.0;
-    this->cor[2] = 0.0;
+    this->cor[0] = 1.0;
+    this->cor[1] = 1.0;
+    this->cor[2] = 1.0;
 
     //qDebug() << (tamanho * i) + (tamanho) << (tamanho * j) + (tamanho);
     //qDebug() << tamanho * i << tamanho * j;
@@ -62,15 +62,18 @@ void Pixel::desenhar()
 
 void Pixel::desenhar2()
 {
-    glBegin(GL_QUADS);
-        glColor3fv(this->cor);
+    if(this->desenhar_pix)
+    {
+        glBegin(GL_QUADS);
+            glColor3fv(this->cor);
 
-        glVertex2f(this->pos.x_min + pos_mundo[0], this->pos.y_min + pos_mundo[1]);
-        glVertex2f(this->pos.x_min + pos_mundo[0], this->pos.y_max + pos_mundo[1]);
+            glVertex2f(this->pos.x_min + pos_mundo[0], this->pos.y_min + pos_mundo[1]);
+            glVertex2f(this->pos.x_min + pos_mundo[0], this->pos.y_max + pos_mundo[1]);
 
-        glVertex2f(this->pos.x_max + pos_mundo[0], this->pos.y_max + pos_mundo[1]);
-        glVertex2f(this->pos.x_max + pos_mundo[0], this->pos.y_min + pos_mundo[1]);
-    glEnd();
+            glVertex2f(this->pos.x_max + pos_mundo[0], this->pos.y_max + pos_mundo[1]);
+            glVertex2f(this->pos.x_max + pos_mundo[0], this->pos.y_min + pos_mundo[1]);
+        glEnd();
+    }
 }
 
 const char* Pixel::get_descricao()
@@ -103,5 +106,27 @@ void Pixel::set_max_XY(float x, float y)
 {
     this->pos.x_max = x;
     this->pos.y_max = y;
+}
+
+void Pixel::set_cor(float r, float g, float b)
+{
+    this->cor[0] = r;
+    this->cor[1] = g;
+    this->cor[2] = b;
+}
+
+float *Pixel::get_cor()
+{
+    return this->cor;
+}
+
+int Pixel::get_i() const
+{
+    return this->i;
+}
+
+int Pixel::get_j() const
+{
+    return this->j;
 }
 

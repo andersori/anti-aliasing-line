@@ -10,14 +10,21 @@ class Matriz
 {
 
 public:
-    Matriz(int altura = 2, int largura = 2, int dimensao = 20);
+    Matriz(int altura = 2, int largura = 2, int dimensao = 300);
     ~Matriz();
 
     void desenhar(Linha *lin);
     int get_dimensao();
     void set_dimensao(int valor);
 
+    //1ª algoritmo para resolver o aliasing
+    void borramento();
+
+    //2ª algoritmo para resolver o aliasing
+    void bresenham();
+
 private:
+    //Produz o aliasing
     void pixeis_da_linha(Linha* lin);
 
     struct Janela{
