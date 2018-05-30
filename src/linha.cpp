@@ -1,5 +1,6 @@
 #include "linha.h"
 #include <QtOpenGL>
+#include <qmath.h>
 
 using std::vector;
 
@@ -63,6 +64,7 @@ float Linha::get_angulo() const
 void Linha::set_angulo(float angulo)
 {
     this->angulo = angulo;
+    rotacionar();
 }
 
 Linha::Posicao *Linha::get_ponto_inicial() const
@@ -73,4 +75,15 @@ Linha::Posicao *Linha::get_ponto_inicial() const
 Linha::Posicao *Linha::get_ponto_final() const
 {
     return this->p2;
+}
+
+void Linha::rotacionar()
+{
+    double angle = M_PI/180.0*this->angulo;
+
+    p1->x = (p1->x * cos(angle))+(p1->y * sin(angle));
+    p1->y = (p1->x * -sin(angle))+(p1->y * cos(angle));
+
+    p2->x = (p2->x * cos(angle))+(p2->y * sin(angle));
+    p2->y = (p2->x * -sin(angle))+(p2->y * cos(angle));
 }

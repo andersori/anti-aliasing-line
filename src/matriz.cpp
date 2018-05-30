@@ -110,7 +110,7 @@ void Matriz::set_dimensao(int valor)
             //Diminuir a dimensão da matriz
             for(int i = 0; i < this->linha; i++)
             {
-                if(i >= (valor))
+                if(i >= valor)
                 {
                     this->pixeis.pop_back();
                 }
@@ -120,7 +120,7 @@ void Matriz::set_dimensao(int valor)
 
                     for(int j = 0; j < this->coluna; j++)
                     {
-                        if(j >= (valor))
+                        if(j >= valor)
                         {
                             linha_do_pixel->pop_back();
                         }
@@ -367,8 +367,13 @@ void Matriz::bresenham(Linha *lin)
             }
         }
 
-    }
+        for (int i = 0; i < (this->linha*3); i++){
+            delete MatrizTemp[i];
+        }
 
+        delete MatrizTemp;
+
+    }
 }
 
 void Matriz::set_algoritmo(int id)

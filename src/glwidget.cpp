@@ -62,3 +62,9 @@ void GLWidget::set_algoritmo(int algoritmo)
     this->mt->set_algoritmo(algoritmo);
     this->update();
 }
+
+void GLWidget::set_angulo(int angulo)
+{
+    this->lin->set_angulo((float)angulo+0.0);
+    this->update();
+}

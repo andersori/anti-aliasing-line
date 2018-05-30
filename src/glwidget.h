@@ -18,6 +18,7 @@ public:
 public slots:
     void set_dimensao(int valor);
     void set_algoritmo(int algoritmo);
+    void set_angulo(int angulo);
 
 private:
     Matriz* mt;

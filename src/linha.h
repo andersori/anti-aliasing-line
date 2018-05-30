@@ -35,6 +35,8 @@ private:
     float* cor;
     Posicao* p1;
     Posicao* p2;
+
+    void rotacionar();
 };
 
 #endif // LINHA_H

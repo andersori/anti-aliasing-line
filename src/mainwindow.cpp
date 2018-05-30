@@ -35,3 +35,8 @@ void MainWindow::on_comboBox_currentIndexChanged(int index)
         this->ui->tela->set_algoritmo(2);
     }
 }
+
+void MainWindow::on_angulo_valueChanged(int value)
+{
+    this->ui->tela->set_angulo(value);
+}
