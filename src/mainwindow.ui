@@ -73,6 +73,27 @@
      <item>
       <widget class="QDial" name="angulo"/>
      </item>
+     <item>
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Tecnica Anti</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="comboBox">
+       <item>
+        <property name="text">
+         <string>Bresenham</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Borramento</string>
+        </property>
+       </item>
+      </widget>
+     </item>
     </layout>
    </widget>
   </widget>

@@ -39,15 +39,6 @@ void GLWidget::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT);
 
-    /*
-    Pixel* p = new Pixel(0,0,0.5,-1,-1);
-
-    p->set_max_XY(0.5, 0.5);
-    p->set_min_XY(0.0, 0.0);
-
-    p->desenhar();
-    */
-
     mt->desenhar(lin);
     //lin->desenhar();
 }
@@ -61,4 +52,13 @@ void GLWidget::set_dimensao(int valor)
 {
     this->mt->set_dimensao(valor);
     this->lin->set_dimensao(valor);
+
+    glClear(GL_COLOR_BUFFER_BIT);
+    this->update();
+}
+
+void GLWidget::set_algoritmo(int algoritmo)
+{
+    this->mt->set_algoritmo(algoritmo);
+    this->update();
 }

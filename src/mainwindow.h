@@ -16,6 +16,8 @@ public:
     ~MainWindow();
 
 private slots:
+    void on_dimencao_valueChanged(int arg1);
+    void on_comboBox_currentIndexChanged(int index);
 
 private:
     Ui::MainWindow *ui;

@@ -130,3 +130,9 @@ int Pixel::get_j() const
     return this->j;
 }
 
+void Pixel::set_tamanho(float tamanho)
+{
+    set_max_XY((tamanho * i) + (tamanho), (tamanho * j) + (tamanho));
+    set_min_XY(tamanho * i, tamanho * j);
+}
+

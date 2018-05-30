@@ -10,10 +10,12 @@ class Matriz
 {
 
 public:
-    Matriz(int altura = 2, int largura = 2, int dimensao = 300);
+    Matriz(int altura = 2, int largura = 2, int dimensao = 20);
     ~Matriz();
 
     void desenhar(Linha *lin);
+
+    //Dimensão
     int get_dimensao();
     void set_dimensao(int valor);
 
@@ -21,7 +23,12 @@ public:
     void borramento();
 
     //2ª algoritmo para resolver o aliasing
-    void bresenham();
+    float coeficiente(float pix,float piy, float pfx, float pfy);
+    void calBresenham(float **matrizTemp, float pix, float piy, float pfx, float pfy, float mx, float my);
+    void bresenham(Linha* lin);
+
+    //Qual algoritmo usar
+    void set_algoritmo(int id);
 
 private:
     //Produz o aliasing
@@ -44,6 +51,8 @@ private:
     Janela aspecto;
 
     vector<vector<Pixel*>* > pixeis;
+
+    int algoritmo;
 };
 
 #endif // MATRIZ_H

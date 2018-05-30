@@ -14,7 +14,10 @@ public:
     void paintGL();
 
     int get_dimensao();
+
+public slots:
     void set_dimensao(int valor);
+    void set_algoritmo(int algoritmo);
 
 private:
     Matriz* mt;

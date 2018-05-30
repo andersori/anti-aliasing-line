@@ -29,6 +29,8 @@ public:
     int get_i() const;
     int get_j() const;
 
+    void set_tamanho(float tamanho);
+
 private:
     struct Posicao{
         //x e y da posição inferior esquerda do pixel

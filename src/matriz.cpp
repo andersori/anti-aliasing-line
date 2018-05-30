@@ -6,6 +6,8 @@ Matriz::Matriz(int altura, int largura, int dimensao)
     : linha(dimensao), coluna(dimensao), aspecto(Janela(altura, largura))
 {
     qDebug() << "Altura:" << altura << ", Dimensao: " << dimensao << " = " << (this->aspecto.altura + 0.0) / (dimensao+0.0) << ".";
+    this->algoritmo = 1;
+
     for(int i = 0; i < this->linha; i++)
     {
         vector<Pixel* >* temp = new vector<Pixel*>();
@@ -32,13 +34,25 @@ Matriz::~Matriz()
 void Matriz::desenhar(Linha* lin)
 {
     pixeis_da_linha(lin);
-    borramento();
 
+    qDebug() << "tentando utilizar o algoritmo";
+    if(algoritmo == 1)
+    {
+        bresenham(lin);
+    }
+    if(algoritmo == 2)
+    {
+        borramento();
+    }
+    qDebug() << "conceguiu utilizar o algoritmo";
+
+
+    qDebug() << "Tentando Desenha";
     for(int i = 0; i < this->linha; i++)
     {
+        vector<Pixel*>* qq = pixeis.at(i);
         for(int j = 0; j < this->coluna; j++)
         {
-            vector<Pixel*>* qq = pixeis.at(i);
             Pixel* pp = qq->at(j);
 
             //qDebug() << pp->get_descricao();
@@ -46,6 +60,7 @@ void Matriz::desenhar(Linha* lin)
 
         }
     }
+    qDebug() << "Conceguiu Desenha";
 }
 
 int Matriz::get_dimensao()
@@ -54,9 +69,87 @@ int Matriz::get_dimensao()
 }
 
 void Matriz::set_dimensao(int valor)
-{
-    this->linha = valor;
-    this->coluna = valor;
+{   
+    if(valor != this->linha)
+    {
+        if(valor > this->linha)
+        {
+            //Almentar a dimenção da matriz
+            for(int i = 0; i < valor; i++)
+            {
+                if(i >= this->linha && i < valor)
+                {
+                    vector<Pixel* >* nova_linha = new vector<Pixel*>();
+
+                    for(int j = 0; j < valor; j++)
+                    {
+                        nova_linha->push_back(new Pixel(i,j,((this->aspecto.altura + 0.0) / (valor + 0.0)), -1, -1));
+                    }
+                    this->pixeis.push_back(nova_linha);
+
+                }
+                else
+                {
+                    vector<Pixel* >* linha_do_pixel = this->pixeis.at(i);
+
+                    for(int j = 0; j < valor; j++)
+                    {
+                        if(j >= this->coluna && j < valor)
+                        {
+                            linha_do_pixel->push_back(new Pixel(i,j,((this->aspecto.altura + 0.0) / (valor + 0.0)), -1, -1));
+                        }
+                        else
+                        {
+                            Pixel* temp = linha_do_pixel->at(j);
+                            temp->set_tamanho((this->aspecto.altura + 0.0) / (valor + 0.0));
+                            temp->set_cor(1.0, 1.0, 1.0);
+                        }
+                    }
+                }
+
+            }
+
+        }
+        else
+        {
+            //Diminuir a dimensão da matriz
+            for(int i = 0; i < this->linha; i++)
+            {
+                if(i >= (valor))
+                {
+                    qDebug() << "linha " << i << " dropada";
+                    this->pixeis.pop_back();
+                }
+                else
+                {
+                    vector<Pixel* >* linha_do_pixel = this->pixeis.at(i);
+
+                    for(int j = 0; j < this->coluna; j++)
+                    {
+                        if(j >= (valor))
+                        {
+                            qDebug() << "Pixel " << i << j << " dropado";
+                            linha_do_pixel->pop_back();
+                        }
+                        else
+                        {
+                            Pixel* temp = linha_do_pixel->at(j);
+                            temp->set_tamanho((this->aspecto.altura + 0.0) / (valor + 0.0));
+                            temp->set_cor(1.0, 1.0, 1.0);
+                        }
+
+                    }
+
+                }
+
+            }
+        }
+
+        this->linha = valor;
+        this->coluna = valor;
+
+        qDebug() << "ultima linha da matriz " << this->linha-1 << ". Tamanho da matriz: " << this->pixeis.size();
+    }
 }
 
 void Matriz::borramento()
@@ -155,6 +248,134 @@ void Matriz::borramento()
 
         }
     }
+}
+
+float Matriz::coeficiente(float pix, float piy, float pfx, float pfy)
+{
+    if (pfx == pix || pfy == piy){
+        return 0.0;
+    }
+    else{
+        if (pix < pfx){
+            if (piy < pfy){
+                return ((pfx - pix)/(pfy - piy));
+            }
+            else{
+                return ((pfx - pix)/(piy - pfy));
+            }
+        }
+        else {
+            if ( piy < pfy) {
+                return ((pix - pfx)/(pfy - piy));
+            }
+            else{
+                return ((pix - pfx)/(piy - pfy));
+            }
+        }
+    }
+}
+
+void Matriz::calBresenham(float **matrizTemp, float pix, float piy, float pfx, float pfy, float mx, float my)
+{
+    for(int i = 0; i <= abs(pfx - pix); i++)
+    {
+        int aux = piy + (i * my);
+        if (piy > pfy){
+            aux = piy - (i * my);
+        }
+
+        int aux2 = pix + i;
+        if (pix > pfx){
+            aux2 = pix - i;
+        }
+
+        matrizTemp[aux2][aux] = 0.0;
+
+    }
+    for(int i = 0; i <= abs(pfy - piy); i++)
+    {
+        int aux = pix + (i * mx);
+        if (pix > pfx){
+            aux = pix - (i * mx);
+        }
+
+        int aux2 = piy +i;
+        if (piy > pfy){
+            aux2 = piy - i;
+        }
+
+        matrizTemp[aux][aux2] = 0.0;
+    }
+}
+
+void Matriz::bresenham(Linha *lin)
+{
+    Linha::Posicao* p_inicial = lin->get_ponto_inicial();
+    Linha::Posicao* p_final = lin->get_ponto_final();
+
+    //p é ponto
+    //utilizar "linha" pq ela é a DIMENSÃO da matriza
+
+    //p_linha_na_matriz_inicial_x
+    float pix = (p_inicial->x + 1) * this->linha/2.0;
+
+    //p_linha_na_matriz_inicial_y
+    float piy = (p_inicial->y + 1) * this->linha/2.0;
+
+    //p_linha_na_matriz_final_x
+    float pfx = (p_final->x + 1) * this->linha/2.0;
+
+    //p_linha_na_matriz_final_y
+    float pfy = (p_final->y + 1) * this->linha/2.0;
+
+
+    float** MatrizTemp = new float*[this->linha*3];
+
+    for (int i = 0; i < (this->linha*3); i++){
+        MatrizTemp[i] = new float[this->linha*3];
+        for (int j = 0; j < (this->linha * 3); j++){
+            MatrizTemp[i][j] = 1.0;
+        }
+    }
+
+    float Mix[5] = {pix*3+2, pix*3+1, pix*3, pix*3, pix*3};
+    float Miy[5] = {piy*3, piy*3, piy*3, piy*3+1, piy*3+2};
+    float Mfx[5] = {pfx*3+2, pfx*3+2, pfx*3+2, pfx*3+1, pfx*3};
+    float Mfy[5] = {pfy*3, pfy*3+1, pfy*3+2, pfy*3+2, pfy*3+2};
+
+    float Coeficientes[5][2] = { { coeficiente(Mix[0],Miy[0],Mfx[0],Mfy[0]), coeficiente(Miy[0],Mix[0],Mfy[0],Mfx[0]) },
+                                 { coeficiente(Mix[1],Miy[1],Mfx[1],Mfy[1]), coeficiente(Miy[1],Mix[1],Mfy[1],Mfx[1]) },
+                                 { coeficiente(Mix[2],Miy[2],Mfx[2],Mfy[2]), coeficiente(Miy[2],Mix[2],Mfy[2],Mfx[2]) },
+                                 { coeficiente(Mix[3],Miy[3],Mfx[3],Mfy[3]), coeficiente(Miy[3],Mix[3],Mfy[3],Mfx[3]) },
+                                 { coeficiente(Mix[4],Miy[4],Mfx[4],Mfy[4]), coeficiente(Miy[4],Mix[4],Mfy[4],Mfx[4]) } };
+
+
+    for (int i = 0; i < 5; i++)
+    {
+
+        calBresenham(MatrizTemp, Mix[i], Miy[i], Mfx[i], Mfy[i], Coeficientes[i][0], Coeficientes[i][1]);
+    }
+
+    for (int i = 0; i < this->linha; i ++ ){
+        for (int j = 0; j < this->linha; j++) {
+            float aux = (MatrizTemp[3*i][3*j] + MatrizTemp[3*i+1][3*j] + MatrizTemp[3*i+2][3*j] +
+                    MatrizTemp[3*i][3*j+1] + MatrizTemp[3*i+1][3*j+1] + MatrizTemp[3*i+2][3*j+1] +
+                    MatrizTemp[3*i][3*j+2] + MatrizTemp[3*i+1][3*j+2] + MatrizTemp[3*i+2][3*j+2])/9;
+
+            vector<Pixel*>* temp = this->pixeis.at(i);
+            Pixel* p = temp->at(j);
+
+            //p->desenhar2();
+            p->set_cor(aux,aux,aux);
+            p->set_desenhar(true);
+        }
+    }
+
+}
+
+void Matriz::set_algoritmo(int id)
+{
+    this->algoritmo = id;
 }
 
 void Matriz::pixeis_da_linha(Linha* lin)
